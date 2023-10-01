@@ -65,17 +65,7 @@ public class BeerServiceImpl implements BeerService {
 
         log.debug("Get beer by Id - in service. Id : {} ", id.toString());
 
-        return Beer.builder()
-                .id(id)
-                .version(1)
-                .beerName("Galaxy Cat")
-                .upc("12356")
-                .price(new BigDecimal("12.99"))
-                .quantityOnHand(122)
-                .beerStyle(BeerStyle.PALE_ALE)
-                .createDate(LocalDateTime.now())
-                .updateDate(LocalDateTime.now())
-                .build();
+        return beerMap.get(id);
     }
 
     @Override
