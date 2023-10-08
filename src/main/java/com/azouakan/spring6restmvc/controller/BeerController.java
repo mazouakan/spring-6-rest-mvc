@@ -19,6 +19,12 @@ import java.util.UUID;
 public class BeerController {
     private final BeerService beerService;
 
+    @PatchMapping("{beerId}")
+    public ResponseEntity<Beer> updateBeerPatchById(@PathVariable UUID beerId, @RequestBody Beer beer){
+        beerService.updateBeerPatchById(beerId, beer);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @DeleteMapping("{beerId}")
     public ResponseEntity<Beer> deleteById(@PathVariable UUID beerId){
         beerService.deleteBeerById(beerId);

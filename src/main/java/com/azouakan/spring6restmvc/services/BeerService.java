@@ -5,6 +5,7 @@ import com.azouakan.spring6restmvc.model.Beer;
 import java.util.List;
 import java.util.UUID;
 
+
 public interface BeerService {
 
     void updateBeerById(UUID beerId, Beer beer);
@@ -15,4 +16,6 @@ public interface BeerService {
     Beer saveNewBeer(Beer beer);
 
     void deleteBeerById(UUID beerId);
+
+    void updateBeerPatchById(UUID beerId, Beer beer);
 }
