@@ -7,6 +7,8 @@ import java.util.UUID;
 
 public interface BeerService {
 
+    void updateBeerById(UUID beerId, Beer beer);
+
     Beer getBeerById(UUID id);
     List<Beer> listBeers();
 
