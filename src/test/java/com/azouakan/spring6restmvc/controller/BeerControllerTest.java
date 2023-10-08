@@ -3,6 +3,8 @@ package com.azouakan.spring6restmvc.controller;
 import com.azouakan.spring6restmvc.model.Beer;
 import com.azouakan.spring6restmvc.services.BeerService;
 import com.azouakan.spring6restmvc.services.BeerServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -24,11 +26,20 @@ class BeerControllerTest {
     @MockBean
     BeerService beerService;
 
-    BeerServiceImpl beerServiceIpml = new BeerServiceImpl();
+    @Autowired
+    ObjectMapper objectMapper;
+
+    BeerServiceImpl beerServiceImpl = new BeerServiceImpl();
+
+    @Test
+    void testCreateNewBeer() throws JsonProcessingException {
+        Beer beer = beerServiceImpl.listBeers().get(0);
+        System.out.println(objectMapper.writeValueAsString(beer));
+    }
 
     @Test
     void testListBeers() throws Exception {
-        given(beerService.listBeers()).willReturn(beerServiceIpml.listBeers());
+        given(beerService.listBeers()).willReturn(beerServiceImpl.listBeers());
         mockMvc.perform(get("/api/v1/beer")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -40,7 +51,7 @@ class BeerControllerTest {
     @Test
     void getBeerById() throws Exception {
 
-        Beer testBeer = beerServiceIpml.listBeers().get(0);
+        Beer testBeer = beerServiceImpl.listBeers().get(0);
 
         given(beerService.getBeerById(testBeer.getId())).willReturn(testBeer);
 
