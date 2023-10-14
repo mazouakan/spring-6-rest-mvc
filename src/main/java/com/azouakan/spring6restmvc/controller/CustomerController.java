@@ -13,40 +13,41 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/api/v1/customer")
 public class CustomerController {
 
     private final CustomerService customerService;
+    public static final String CUSTOMER_PATH = "/api/v1/customer";
+    public static final String CUSTOMER_PATH_ID = CUSTOMER_PATH + "/{customerId}";
 
-    @PatchMapping("{customerId}")
+    @PatchMapping(CUSTOMER_PATH_ID)
     public ResponseEntity<Customer> updateCustomerPatchById(@PathVariable UUID customerId, @RequestBody Customer customer){
         customerService.updateCustomerPatchById(customerId, customer);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("{customerId}")
+    @DeleteMapping(CUSTOMER_PATH_ID)
     public ResponseEntity<Customer> deleteById(@PathVariable UUID customerId){
         customerService.deleteCustomerById(customerId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/{customerId}")
+    @PutMapping(CUSTOMER_PATH_ID)
     public ResponseEntity<Customer> updateById(@PathVariable UUID customerId, @RequestBody Customer customer){
         customerService.updateCustomerById(customerId, customer);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping(CUSTOMER_PATH)
     public List<Customer> CustomerList(){
         return customerService.customersList();
     }
 
-    @RequestMapping(value = "{customerId}", method = RequestMethod.GET)
+    @GetMapping(CUSTOMER_PATH_ID)
     public Customer getCustomerById(@PathVariable("customerId") UUID customerId){
         return customerService.getCustomerById(customerId);
     }
 
-    @PostMapping
+    @PostMapping(CUSTOMER_PATH)
     public ResponseEntity<Customer> handlePost(@RequestBody Customer customer){
         Customer savedCustomer = customerService.saveNewCustomre(customer);
         HttpHeaders headers = new HttpHeaders();

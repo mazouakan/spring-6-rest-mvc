@@ -15,29 +15,30 @@ import java.util.UUID;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/api/v1/beer")
 public class BeerController {
     private final BeerService beerService;
+    public static final String BEER_PATH = "/api/v1/beer";
+    public static final String BEER_PATH_ID = BEER_PATH + "/{beerId}";
 
-    @PatchMapping("{beerId}")
+    @PatchMapping(BEER_PATH_ID)
     public ResponseEntity<Beer> updateBeerPatchById(@PathVariable UUID beerId, @RequestBody Beer beer){
         beerService.updateBeerPatchById(beerId, beer);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("{beerId}")
+    @DeleteMapping(BEER_PATH_ID)
     public ResponseEntity<Beer> deleteById(@PathVariable UUID beerId){
         beerService.deleteBeerById(beerId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/{beerId}")
+    @PutMapping(BEER_PATH_ID)
     public ResponseEntity<Beer> updateById(@PathVariable UUID beerId, @RequestBody Beer beer){
         beerService.updateBeerById(beerId, beer);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping
+    @PostMapping(BEER_PATH)
     public ResponseEntity<Beer> handlePost(@RequestBody Beer beer){
         Beer savedBeer = beerService.saveNewBeer(beer);
         HttpHeaders headers = new HttpHeaders();
@@ -45,12 +46,12 @@ public class BeerController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping(BEER_PATH)
     public List<Beer> listBeers(){
         return beerService.listBeers();
     }
 
-    @RequestMapping(value = "{beerId}",method = RequestMethod.GET)
+    @GetMapping(BEER_PATH_ID)
     public Beer getBeerById(@PathVariable("beerId") UUID beerId){
         log.debug("Get Beer by Id - in controller");
         return beerService.getBeerById(beerId);
