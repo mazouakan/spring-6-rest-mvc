@@ -57,7 +57,7 @@ class CustomerControllerTest {
         Map<String, Object> customerMap = new HashMap<>();
         customerMap.put("customerName", "New Customer");
 
-        mockMvc.perform(patch(CustomerController.CUSTOMER_PATH + "/" + customer.getId())
+        mockMvc.perform(patch(CustomerController.CUSTOMER_PATH_ID, customer.getId())
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(customerMap)))
@@ -71,7 +71,7 @@ class CustomerControllerTest {
     void testDeleteCustomer() throws Exception {
         Customer customer = customerServiceImpl.customersList().get(0);
 
-        mockMvc.perform(delete(CustomerController.CUSTOMER_PATH + "/" + customer.getId())
+        mockMvc.perform(delete(CustomerController.CUSTOMER_PATH_ID, customer.getId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
         verify(customerService).deleteCustomerById(uuidArgumentCaptor.capture());
@@ -82,7 +82,7 @@ class CustomerControllerTest {
     void testUpdateCustomer() throws Exception {
         Customer customer = customerServiceImpl.customersList().get(0);
 
-        mockMvc.perform(put(CustomerController.CUSTOMER_PATH + "/" + customer.getId())
+        mockMvc.perform(put(CustomerController.CUSTOMER_PATH_ID, customer.getId())
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(customer)))
@@ -122,7 +122,7 @@ class CustomerControllerTest {
         given(customerService.getCustomerById(testCustomer.getId()))
                 .willReturn(customerServiceImpl.getCustomerById(testCustomer.getId()));
 
-        mockMvc.perform(get(CustomerController.CUSTOMER_PATH + "/" + testCustomer.getId().toString())
+        mockMvc.perform(get(CustomerController.CUSTOMER_PATH_ID, testCustomer.getId().toString())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
