@@ -52,6 +52,13 @@ class CustomerControllerTest {
     }
 
     @Test
+    void getCustomerByIdNotFound() throws Exception {
+        given(customerService.getCustomerById(any(UUID.class))).willThrow(NotFoundException.class);
+        mockMvc.perform(get(CustomerController.CUSTOMER_PATH_ID, UUID.randomUUID()))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     void testPatchCustomer() throws Exception {
         Customer customer =  customerServiceImpl.customersList().get(0);
         Map<String, Object> customerMap = new HashMap<>();
