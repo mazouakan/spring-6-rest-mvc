@@ -20,6 +20,12 @@ public class BeerController {
     public static final String BEER_PATH = "/api/v1/beer";
     public static final String BEER_PATH_ID = BEER_PATH + "/{beerId}";
 
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<NotFoundException> handleNotFoundException(){
+        return ResponseEntity.notFound().build();
+    }
+
+
     @PatchMapping(BEER_PATH_ID)
     public ResponseEntity<Beer> updateBeerPatchById(@PathVariable UUID beerId, @RequestBody Beer beer){
         beerService.updateBeerPatchById(beerId, beer);
