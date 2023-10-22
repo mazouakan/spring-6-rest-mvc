@@ -1,6 +1,7 @@
 package com.azouakan.spring6restmvc.controller;
 
 import com.azouakan.spring6restmvc.entities.Beer;
+import com.azouakan.spring6restmvc.mappers.BeerMapper;
 import com.azouakan.spring6restmvc.model.BeerDTO;
 import com.azouakan.spring6restmvc.repositories.BeerRepository;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,25 @@ public class BeerControllerIT {
     
     @Autowired
     BeerRepository beerRepository;
+
+    @Autowired
+    BeerMapper beerMapper;
+
+    @Test
+    void updateExistingBeerTest() {
+        Beer beer = beerRepository.findAll().get(0);
+        BeerDTO beerDTO = beerMapper.beerToBeerDto(beer);
+        beerDTO.setVersion(null);
+        beerDTO.setVersion(null);
+        final String beerName = "UPDATED";
+        beerDTO.setBeerName(beerName);
+        ResponseEntity<BeerDTO> responseEntity = beerController.updateById(beer.getId(), beerDTO);
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(204));
+        Beer updatedBeer = beerRepository.findById(beer.getId()).get();
+        assertThat(updatedBeer.getBeerName()).isEqualTo(beerName);
+
+
+    }
 
     @Rollback
     @Transactional
