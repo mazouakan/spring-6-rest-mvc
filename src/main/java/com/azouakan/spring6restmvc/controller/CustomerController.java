@@ -21,19 +21,27 @@ public class CustomerController {
 
     @PatchMapping(CUSTOMER_PATH_ID)
     public ResponseEntity<CustomerDTO> updateCustomerPatchById(@PathVariable UUID customerId, @RequestBody CustomerDTO customer){
-        customerService.updateCustomerPatchById(customerId, customer);
+
+        if(customerService.updateCustomerPatchById(customerId, customer).isEmpty()){
+            throw  new NotFoundException();
+        }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping(CUSTOMER_PATH_ID)
     public ResponseEntity<CustomerDTO> deleteById(@PathVariable UUID customerId){
-        customerService.deleteCustomerById(customerId);
+        if(!customerService.deleteCustomerById(customerId)) {
+            throw new NotFoundException();
+        }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping(CUSTOMER_PATH_ID)
     public ResponseEntity<CustomerDTO> updateById(@PathVariable UUID customerId, @RequestBody CustomerDTO customer){
-        customerService.updateCustomerById(customerId, customer);
+        if(customerService.updateCustomerById(customerId, customer).isEmpty()){
+            throw new NotFoundException();
+        }
+
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
